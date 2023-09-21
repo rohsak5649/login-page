@@ -1,0 +1,58 @@
+import SwiftUI
+
+struct NewsArticle {
+    let title: String
+    let content: String
+    let imageURL: URL?
+}
+
+struct NewsDetailsScreen: View {
+    let article: NewsArticle
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                if let imageURL = article.imageURL {
+                    // Display an image if available
+                    AsyncImage(url: imageURL) { phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } else if phase.error != nil {
+                            Text("Image Load Error")
+                                .foregroundColor(.red)
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                    .frame(maxHeight: 200)
+                }
+                
+                Text(article.title)
+                    .font(.title)
+                    .bold()
+                
+                Text(article.content)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
+                
+                Spacer()
+            }
+            .padding()
+        }
+        .navigationTitle("News Details")
+    }
+}
+
+struct NewsDetailsScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        let sampleArticle = NewsArticle(
+            title: "Sample News Article",
+            content: "This is a sample news article content. It can be quite long and contain detailed information about the news.",
+            imageURL: URL(string: "https://example.com/sample-image.jpg")
+        )
+        
+        NewsDetailsScreen(article: sampleArticle)
+    }
+}
