@@ -1,0 +1,42 @@
+import SwiftUI
+
+struct Headline: Identifiable {
+    let id = UUID()
+    let title: String
+    let summary: String
+}
+
+struct HeadlinesScreen: View {
+    let headlines: [Headline] // Replace with your actual data
+    
+    var body: some View {
+        NavigationView {
+            List(headlines) { headline in
+                NavigationLink(destination: Text("Detail View for \(headline.title)")) {
+                    VStack(alignment: .leading) {
+                        Text(headline.title)
+                            .font(.headline)
+                        Text(headline.summary)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            .navigationTitle("Headlines")
+        }
+    }
+}
+
+struct HeadlinesScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        let sampleHeadlines = [
+            Headline(title: "Breaking News 1", summary: "This is the summary for the first headline."),
+            Headline(title: "Sports Update", summary: "A quick sports update for sports enthusiasts."),
+            Headline(title: "Tech News", summary: "The latest tech news and developments."),
+            // Add more headlines as needed
+        ]
+        
+        HeadlinesScreen(headlines: sampleHeadlines)
+    }
+}
+
